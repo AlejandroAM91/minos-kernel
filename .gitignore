@@ -1,0 +1,7 @@
+# Compiled files
+*.img
+
+# Compilation files
+*.d
+*.o
+*.pyc

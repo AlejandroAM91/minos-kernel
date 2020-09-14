@@ -4,8 +4,11 @@ import sys
 sys.path.append('scripts/scons')
 import target
 
+DEFAULT_VERSION = '0.0.0'
+
 # Get inputs
 triplet, arch = target.gettarget()
+version = os.getenv('VERSION', DEFAULT_VERSION)
 
 # Config global environment
 env = Environment(
@@ -16,7 +19,7 @@ env = Environment(
 
 # Config build environment
 build_env = env.Clone(
-    LDFLAGS = '-ffreestanding -nostdlib',
+    LDFLAGS = '-nostdlib',
     LDLIBS = '-lgcc',
 )
 build_env.Append(CFLAGS = '-Wall -Wextra -ffreestanding')
@@ -27,4 +30,4 @@ if triplet != None:
     )
 
 # Execute scripts
-SConscript(['internal/kernel/SConscript'], ['build_env', 'arch'])
+SConscript(['pkg/kernel/SConscript'], ['build_env', 'arch', 'version'])

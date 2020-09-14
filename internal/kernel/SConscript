@@ -1,0 +1,24 @@
+import sys
+
+sys.path.append('../../scripts/scons')
+import path
+
+Import('*')
+
+# Create builders
+img_bld = Builder(action = '$CC -T $LDFILE -o $TARGET $LDFLAGS $SOURCES $LDLIBS')
+
+# Config local environment
+env = build_env.Clone(LDFILE = 'scripts/ld/linker-{}.ld'.format(arch))
+env.Append(BUILDERS = {'Image' : img_bld})
+
+# Create object files
+src_files = path.rglob('src','*.c')
+
+arch_dir = 'arch/{}'.format(arch)
+src_files.extend(path.rglob(arch_dir,'*.s'))
+
+obj_files = env.Object(src_files)
+
+# Create image files
+env.Image('#minos.img', obj_files)

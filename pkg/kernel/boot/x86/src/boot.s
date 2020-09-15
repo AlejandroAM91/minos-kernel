@@ -25,6 +25,9 @@ stack_top:
 _start:
 	// Set up the stack
 	mov $stack_top, %esp
+
+	// Call the global constructors.
+	call _init
  
 	// Start main section
 	call main

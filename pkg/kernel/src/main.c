@@ -103,13 +103,12 @@ void terminal_writestring(const char* data)
 {
 	terminal_write(data, strlen(data));
 }
-
-void (*vga_writestring)(const char* data) = &terminal_writestring;
  
-void main() {
+void main(void) 
+{
 	/* Initialize terminal interface */
 	terminal_initialize();
  
 	/* Newline support is left as an exercise. */
-	vga_writestring("Hello, kernel World!\n");
+	terminal_writestring("Hello, kernel World!\n");
 }

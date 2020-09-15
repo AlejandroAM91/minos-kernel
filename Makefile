@@ -20,7 +20,6 @@ LDLIBS := -lgcc -nostdlib
 # MODULES
 ## KERNEL
 KERNEL_DIR := $(CURDIR)/pkg/kernel
-KERNEL_IMAGE := $(CURDIR)/$(IMAGE_NAME)-$(IMAGE_VERSION).img
 
 # AUXFILES
 AUXFILES := $(CURDIR)/Makefile
@@ -28,10 +27,10 @@ AUXFILES := $(CURDIR)/Makefile
 # RULES
 ## BASE
 .PHONY: all
-all: $(KERNEL_IMAGE)
+all: kernel-all
 
 .PHONY: clean
-clean: clean-kernel
+clean: kernel-clean
 
 ## IMPORTS
 -include $(KERNEL_DIR)/config.mk

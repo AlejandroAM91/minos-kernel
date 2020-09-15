@@ -30,6 +30,9 @@ AUXFILES := $(CURDIR)/Makefile
 .PHONY: all
 all: $(KERNEL_IMAGE)
 
+.PHONY: clean
+clean: clean-kernel
+
 ## IMPORTS
 -include $(KERNEL_DIR)/config.mk
 

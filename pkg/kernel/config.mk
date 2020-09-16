@@ -2,7 +2,7 @@
 AUXFILES += $(KERNEL_DIR)/config.mk
 
 # SUBMODULES
-KERNEL_BOOT_DIR := $(KERNEL_DIR)/boot/$(ARCH)
+KERNEL_BOOT_DIR := $(KERNEL_DIR)/boot
 -include $(KERNEL_BOOT_DIR)/config.mk
 
 # CONFIG
@@ -27,8 +27,9 @@ kernel-clean:
 
 ## COMPONENTS
 $(KERNEL_IMAGE): $(KERNEL_BOOT_INIT) $(_obj_files) $(KERNEL_BOOT_OBJS) $(KERNEL_BOOT_END)
+	$(info $@)
 	$(info Creating $(notdir $@)...)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -T $(_ld_file) -o $@ $^ $(LDLIBS)
 
 ## DEPENDENCIES
--include $(_dep_files)
+-include $(KERNEL_BOOT_DEPS) $(_dep_files)

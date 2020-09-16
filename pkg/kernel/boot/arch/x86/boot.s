@@ -29,6 +29,9 @@ _start:
 	// Call the global constructors.
 	call _init
  
+	// Start boot init section
+	call boot_init
+
 	// Start main section
 	call main
 

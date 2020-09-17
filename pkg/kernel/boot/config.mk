@@ -1,18 +1,21 @@
-AUXFILES += $(KERNEL_BOOT_DIR)/config.mk
-KERNEL_BOOT_ARCH_DIR := $(KERNEL_BOOT_DIR)/arch/$(ARCH)
+_dir = $(CURDIR)/boot
+_arch_dir = $(_dir)/arch/$(ARCH)
 
-# Arch config
--include $(KERNEL_BOOT_ARCH_DIR)/config.mk
+_asm = $(shell find $(_arch_dir) -name *.s)
+_src = $(shell find $(_dir)/src -name *.c)
+_src += $(shell find $(_arch_dir) -name *.c)
 
-_src_dir := $(KERNEL_BOOT_DIR)/src
+_crti := $(_arch_dir)/crti.o
+_crtn := $(_arch_dir)/crtn.o
+_crtbegin := $(shell $(CC) -print-file-name=crtbegin.o)
+_crtend   := $(shell $(CC) -print-file-name=crtend.o)
 
-_src_files := $(shell find $(_src_dir) -type f -name "*.c")
-_dep_files := $(_src_files:.c=.d)
-_obj_files := $(_src_files:.c=.o)
-_cln_files := $(_dep_files) $(_obj_files)
+_dep := $(_src:.c=.d)
+_obj := $(_asm:.s=.o) $(_src:.c=.o)
+_obj := $(filter-out $(_crti) $(_crtn), $(_obj))
 
-KERNEL_BOOT_CLN := $(KERNEL_BOOT_ARCH_CLN) $(_cln_files)
-KERNEL_BOOT_INIT := $(KERNEL_BOOT_ARCH_INIT)
-KERNEL_BOOT_OBJS := $(KERNEL_BOOT_ARCH_OBJS) $(_obj_files)
-KERNEL_BOOT_DEPS := $(_dep_files)
-KERNEL_BOOT_END := $(KERNEL_BOOT_ARCH_END)
+KERNEL_CLN += $(_dep) $(_obj) $(_crti) $(_crtn)
+KERNEL_DEP += $(_dep)
+KERNEL_OBJ += $(_obj)
+KERNEL_PREOBJ  += $(_crti) $(_crtbegin)
+KERNEL_POSTOBJ += $(_crtend) $(_crtn)

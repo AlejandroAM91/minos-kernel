@@ -21,7 +21,7 @@ KERNEL_PREOBJ  :=
 KERNEL_POSTOBJ :=
 
 ## CLEAN
-KERNEL_CLN := $(KERNEL_OBJ) $(KERNEL_DEP)
+KERNEL_CLN := $(KERNEL_OUT) $(KERNEL_OBJ) $(KERNEL_DEP)
 
 ## FLAGS
 CFLAGS  := -Wall -Wextra -ffreestanding
@@ -45,7 +45,8 @@ all: $(KERNEL_OUT)
 
 .PHONY: clean
 clean:
-	$(RM) $(KERNEL_CLN)
+	$(info Removing files...)
+	@$(RM) $(KERNEL_CLN)
 
 ## PROJECT
 $(KERNEL_OUT): $(KERNEL_PREOBJ) $(KERNEL_OBJ) $(KERNEL_POSTOBJ)
@@ -56,5 +57,9 @@ $(KERNEL_OUT): $(KERNEL_PREOBJ) $(KERNEL_OBJ) $(KERNEL_POSTOBJ)
 %.o: %.c $(KERNEL_AUX)
 	$(info Compiling $(patsubst $(CURDIR)/%,./%, $<)...)
 	@$(CC) -c -MMD $(CFLAGS) $(CCFLAGS) -o $@ $<
+
+%.o: %.s $(KERNEL_AUX)
+	$(info Compiling $(patsubst $(CURDIR)/%,./%, $<)...)
+	@$(AS) -o $@ $<
 
 -include $(KERNEL_DEP)

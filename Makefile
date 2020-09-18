@@ -1,46 +1,22 @@
-# PROGRAMS
-SHELL := /bin/sh
+# COMMON VARIABLES
+## CONFIG
+export OUTDIR  ?= $(CURDIR)
+export TRIPLET ?= i686-elf
 
-# DEFAULT CONFIG
-TRIPLET ?= i686-elf
-IMAGE_NAME ?= minos
-IMAGE_VERSION ?= 0.0.0
-
-# ENV
-ARCH := $(shell python scripts/make/arch.py $(TRIPLET))
-
-## COMPILERS
-AS := $(TRIPLET)-as
-CC := $(TRIPLET)-gcc
-
-### FLAGS
-CFLAGS := -Wall -Wextra -ffreestanding
-LDLIBS := -lgcc -nostdlib
-
-# MODULES
-## KERNEL
-KERNEL_DIR := $(CURDIR)/pkg/kernel
-
-# AUXFILES
-AUXFILES := $(CURDIR)/Makefile
+## PACKAGES
+PACKAGES := pkg/kernel
 
 # RULES
 ## BASE
-.PHONY: all
-all: kernel-all
+all: $(PACKAGES)
 
-.PHONY: clean
-clean: kernel-clean
+clean:
+	$(info Cleaning all packages...)
+	@for d in $(PACKAGES); do \
+    	$(MAKE) -C $$d clean; \
+    done
 
-## IMPORTS
--include $(KERNEL_DIR)/config.mk
-
-## COMMON
-%.o: %.c $(AUXFILES)
-	$(info Compiling $(patsubst $(CURDIR)/%,./%, $<)...)
-	@$(CC) -c -MMD $(CFLAGS) $(CCFLAGS) -o $@ $<
-
-%.o: %.s $(AUXFILES)
-	$(info Compiling $(patsubst $(CURDIR)/%,./%, $<)...)
-	@$(AS) -o $@ $<
-
+## MODULES
+.PHONY: $(PACKAGES)
+$(PACKAGES):
+	$(MAKE) -C $@

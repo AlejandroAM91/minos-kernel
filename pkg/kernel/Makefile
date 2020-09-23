@@ -25,6 +25,7 @@ KERNEL_CLN := $(KERNEL_OUT) $(KERNEL_OBJ) $(KERNEL_DEP)
 
 ## FLAGS
 CFLAGS  := -Wall -Wextra -ffreestanding
+CCFLAGS :=
 LDFLAGS := -T ../../scripts/ld/linker-$(ARCH).ld
 LDLIBS  := -lgcc -nostdlib
 
@@ -36,7 +37,9 @@ RM := rm -f
 # CONFIG
 all:
 
+## MODULES
 -include boot/config.mk
+#-include shared/config.mk
 
 # RULES
 ## BASE

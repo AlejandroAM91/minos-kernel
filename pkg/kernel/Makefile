@@ -53,7 +53,7 @@ KERNEL_CLN := $(KERNEL_OUT) $(KERNEL_OBJ) $(KERNEL_DEP)
 
 ## FLAGS
 CFLAGS  := -Wall -Wextra -ffreestanding
-CCFLAGS := $(patsubst %, -I%, $(KERNEL_INC))
+CCFLAGS := $(patsubst %, -I%, $(KERNEL_INC)) -DMINOS_VERSION='"$(VERSION)"'
 LDFLAGS := -T ../../scripts/ld/linker-$(ARCH).ld
 LDLIBS  := -lgcc -nostdlib
 

@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <minos/core/hwitf/console.h>
 #include <minos/core/services/console.h>
 
 
@@ -12,6 +13,8 @@
 #define BOOT_CONSOLE_WIDTH  	80
 #define BOOT_CONSOLE_LAST_LINE	(BOOT_CONSOLE_HEIGHT - 1) * BOOT_CONSOLE_WIDTH
 
+extern struct console console;
+
 struct boot_console_pos {
     size_t row;
     size_t col;
@@ -19,11 +22,11 @@ struct boot_console_pos {
 
 uint16_t* _boot_console_buffer;
 
-static inline void      _boot_console_clear();
-static inline uint16_t  _boot_console_entry(unsigned char uc);
-static inline void      _boot_console_newline();
-static inline void      _boot_console_putchar(char c);
-static inline void      _boot_console_scroll();
+static inline void     _boot_console_clear();
+static inline uint16_t _boot_console_entry(unsigned char uc);
+static inline void     _boot_console_newline();
+static inline void     _boot_console_putchar(char c);
+static inline void     _boot_console_scroll();
 
 void boot_console_init()  {
     _boot_console_buffer = (uint16_t*) BOOT_CONSOLE_BUFFER;

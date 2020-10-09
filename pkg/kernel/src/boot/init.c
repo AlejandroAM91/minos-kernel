@@ -1,3 +1,5 @@
+#include <minos/core/services/console.h>
+
 #include "console.h"
 
 void boot_init() {

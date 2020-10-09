@@ -2,7 +2,6 @@
 #define _KERNEL_BOOT_CONSOLE
 
 void boot_console_init();
-void boot_console_putc(char c);
-void boot_console_puts(const char* data);
+void boot_console_putchar(char);
 
 #endif
